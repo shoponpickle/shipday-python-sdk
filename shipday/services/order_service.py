@@ -24,7 +24,13 @@ class OrderService:
 
     def insert_order(self, request: Order):
         request.verify()
-        response = self.httpclient.post(self.PATH, request.get_body())
+        data = request.get_body()
+        data['pickupLatitude'] = request.pickup.address.latitude
+        data['pickupLongitude'] = request.pickup.address.longitude
+        data['deliveryLatitude'] = request.customer.address.latitude
+        data['deliveryLongitude'] = request.customer.address.longitude
+
+        response = self.httpclient.post(self.PATH, data)
         if 'errorCode' in response:
             raise ShipdayException(response['errorMessage'])
         return response
