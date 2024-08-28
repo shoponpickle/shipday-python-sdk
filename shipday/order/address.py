@@ -1,4 +1,5 @@
 from collections import defaultdict
+from decimal import Decimal
 
 from shipday.utils.verifiers import verify_none_or_instance_of
 
@@ -15,6 +16,12 @@ class Address:
         self._state = state
         self._zip = zip
         self._country = country
+
+        if type(latitude) == Decimal:
+            latitude = float(latitude)
+        if type(longitude) == Decimal:
+            longitude = float(longitude)
+
         self._latitude = latitude
         self._longitude = longitude
 
